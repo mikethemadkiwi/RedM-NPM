@@ -2,43 +2,42 @@
 -- Functions For Player Menu
 ----------------------------------------------------------------------------------
 function PMOpen()
-    print('prepping player menu data')
-    prepSessionData()
-    -------------------------------------------------------------------------------- 
-    prepInviteData()
-    --------------------------------------------------------------------------------
-    prepMoonshineData()
-    --------------------------------------------------------------------------------
-    prepHorseAndStable()
-    --------------------------------------------------------------------------------
-    prepMatchMaking()
-    --------------------------------------------------------------------------------
-    prepPlayerList()
+    -- prepSessionData()
+    -- -------------------------------------------------------------------------------- 
+    -- prepInviteData()
+    -- --------------------------------------------------------------------------------
+    -- prepMoonshineData()
+    -- --------------------------------------------------------------------------------
+    -- prepHorseAndStable()
+    -- --------------------------------------------------------------------------------
+    -- prepMatchMaking()
+    -- --------------------------------------------------------------------------------
+    -- prepPlayerList()
+
     --------------------------------------------------------------------------------
     BuildPlayerMenu()
-    print('launching player menu')
     --------------------------------------------------------------------------------
     LaunchUiappByHashWithEntry(mpUIhash, mpUIEntryhash)
 end
 ----------------------------------------------------------------------------------
-function PMClose()
-    CloseAllUiapps()
-    DatabindingClearBindingArray(GameDataBinds["player_menu_data"])
-    DatabindingRemoveDataEntry(GameDataBinds["player_menu_data"])
+function PMClose()    
+    Citizen.CreateThread(function()
+        CloseAllUiapps()
+        DatabindingClearBindingArray(GameDataBinds["player_menu_data"])
+        DatabindingRemoveDataEntry(GameDataBinds["player_menu_data"])
+    end)
 end
 ----------------------------------------------------------------------------------
 -- Launches UIAPP using === 0x80F28E95 - INPUT_PLAYER_MENU - L ===
 ----------------------------------------------------------------------------------
 Citizen.CreateThread(function()
+    LoadDataBindings()
     while true do
         if IsControlJustReleased(0, GetHashKey('INPUT_PLAYER_MENU')) then
-                    print('L')
             if CanLaunchUiappByHash(mpUIhash) then
-                    print('canlaunch')
-                if not IsUiappActiveByHash(mpUIhash) then 
-                    print('isnt already active')          
+                -- if not IsUiappActiveByHash(mpUIhash) then            
                     PMOpen()
-                end
+                -- end
             end
         end
         Citizen.Wait(1) 

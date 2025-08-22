@@ -12,12 +12,9 @@ version '0.0.1'
 dependencies {
     '/onesync',
 }
---[[ Shared Scripts ]]--
-shared_scripts {
-    'npmConfig.lua'
-}
 --[[ Client Scripts ]]--
 client_scripts {
+    'npmConfig.lua',
     'Dataview.lua',
     'DynamicLabels.lua',
     'DataBindings.lua',

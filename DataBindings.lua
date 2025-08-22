@@ -1,18 +1,36 @@
-GameDataBinds = {}
-GameDataBinds["sessionInfo"] = DatabindingAddDataContainerFromPath("", "sessionInfo")
-GameDataBinds["invite_data"] = DatabindingAddDataContainerFromPath("", "invite_data"); 
-GameDataBinds["moonshine_property_data"] = DatabindingAddDataContainerFromPath("", "moonshine_property_data") 
-GameDataBinds["player_menu_stables"] = DatabindingAddDataContainerFromPath("", "player_menu_stables")
-GameDataBinds["match_data"] = DatabindingAddDataContainerFromPath("", "match_data") 
-GameDataBinds["player_menu_data"] = DatabindingAddDataContainerFromPath("", "player_menu_data")
-GameDataBinds["player_data"] = DatabindingAddDataContainerFromPath("", "player_data")  
-GameDataBinds["players_pages"] = DatabindingAddDataContainerFromPath("", "players_pages")
+function LoadDataBindings()
+    Citizen.CreateThread(function()
+        GameDataBinds["sessionInfo"] = DatabindingAddDataContainerFromPath("", "sessionInfo")
+        GameDataBinds["invite_data"] = DatabindingAddDataContainerFromPath("", "invite_data"); 
+        GameDataBinds["moonshine_property_data"] = DatabindingAddDataContainerFromPath("", "moonshine_property_data") 
+        GameDataBinds["player_menu_stables"] = DatabindingAddDataContainerFromPath("", "player_menu_stables")
+        GameDataBinds["match_data"] = DatabindingAddDataContainerFromPath("", "match_data") 
+        GameDataBinds["player_menu_data"] = DatabindingAddDataContainerFromPath("", "player_menu_data")
+        GameDataBinds["player_data"] = DatabindingAddDataContainerFromPath("", "player_data")  
+        GameDataBinds["players_pages"] = DatabindingAddDataContainerFromPath("", "players_pages")
+        GameDataBinds["mp_rank_bar"] = DatabindingAddDataContainerFromPath("", "mp_rank_bar")
+    end)
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+function prepMPRankBar()
+	DatabindingAddDataString(GameDataBinds["mp_rank_bar"], "rank_text", "0");
+	DatabindingAddDataString(GameDataBinds["mp_rank_bar"], "rank_header_text", "0/0");
+	DatabindingAddDataInt(GameDataBinds["mp_rank_bar"], "rank_header_text_alpha", 100);
+	DatabindingAddDataInt(GameDataBinds["mp_rank_bar"], "xp_bar_minimum", false);
+	DatabindingAddDataInt(GameDataBinds["mp_rank_bar"], "xp_bar_maximum", true);
+	DatabindingAddDataInt(GameDataBinds["mp_rank_bar"], "xp_bar_value", false);
+end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 function prepSessionData()
     -- session data these were pulled from session decompliles.
     DatabindingAddDataString(GameDataBinds["sessionInfo"], "characterName", "Player: Playername ( Level: 9000 )") 
 	DatabindingAddDataBool(GameDataBinds["sessionInfo"], "isHorseAlive", true);
+    DatabindingAddDataBoolFromPath("", "bDisplayMissionChallengeChecklist", 0);
+	DatabindingAddDataBoolFromPath("", "bAllowChecklistToggle", 0);
+	DatabindingAddDataBoolFromPath("", "bEnablePauseMenuPhotoMode", 0);
+	DatabindingAddDataBoolFromPath("", "bPauseMenuPhotoModeVisible", 0);
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -94,6 +112,22 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 function BuildPlayerMenu()
     PlayerMenuSubHeader = DatabindingAddUiItemList(GameDataBinds["player_menu_data"], "player_sub_header")
+
+
+    -- 	Var0 = 1;
+	-- Var0.f_1 = 1;
+	-- Var0.f_2 = joaat("COLOR_WHITE");
+	-- Var0.f_4 = -1;
+	-- Var0.f_5 = -1;
+	-- Var0.f_6 = -1;
+	-- Var0.f_10 = -1;
+	-- Var0.f_11 = -1;
+	-- Var0.f_12 = -1;
+	-- Var0.f_21 = 1;
+	-- Var0.f_86 = 255;
+	-- Var0.f_87 = -2147483647;
+	-- StringCopy(&cVar88, "player_sub_header", 64);
+
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "orbis_mode", IsOrbisVersion())
     DatabindingAddDataString(GameDataBinds["player_menu_data"], "header_text", "Player Menu")
     DatabindingAddDataString(GameDataBinds["player_menu_data"], "sub_header_text", "")
@@ -107,22 +141,26 @@ function BuildPlayerMenu()
     DatabindingAddDataHash(GameDataBinds["player_menu_data"], "camp_image_texture_dictionary", 2)
     DatabindingAddDataInt(GameDataBinds["player_menu_data"], "camp_daily_fee", 1)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "options_menu_visible", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_log_enabled", true)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_log_visible", true)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_log_enabled", npmConfig.ShowLog)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_log_visible", npmConfig.ShowLog)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_invite_players_enabled", true)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_invites_enabled", true)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_invites_icon_visible", true)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_invites_enabled", npmConfig.ShowInvites)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_invites_icon_visible", npmConfig.ShowInvites)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_daily_challenges_visible", false)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_daily_challenges_enabled", false)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_daily_challenges_focused", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_bounty_enabled", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_posse_enabled", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_camp_enabled", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_camp_and_property_enabled", true)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_moonshine_property_visible", false) -- enables in player menu.
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_moonshine_property_enabled", false) -- :D
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_stables_enabled", false) -- enabling in main menu
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_telegrams_enabled", false)
-    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_players_enabled", true)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_bounty_enabled", true)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_posse_enabled", npmConfig.ShowPosse)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_camp_enabled", npmConfig.ShowCamp)
+    local boolShowPorperties = false
+    if npmConfig.ShowCamp == true then boolShowPorperties = true end
+    if npmConfig.ShowMoonshineShack == true then boolShowPorperties = true end
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_camp_and_property_enabled", boolShowPorperties)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_moonshine_property_visible", npmConfig.ShowMoonshineShack) -- enables in player menu.
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_moonshine_property_enabled", npmConfig.ShowMoonshineShack) -- :D
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_stables_enabled", npmConfig.ShowStables) -- enabling in main menu
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_telegrams_enabled", npmConfig.ShowTelegrams)
+    DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_players_enabled", npmConfig.ShowPlayerlist)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_jobs_enabled", false)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_options_enabled", true)
     DatabindingAddDataBool(GameDataBinds["player_menu_data"], "player_menu_quit_to_free_roam", false)
