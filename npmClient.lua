@@ -1,11 +1,8 @@
-mpUIhash = GetHashKey("player_menu")
-mpUIEntryhash = GetHashKey("mp")
-GameInvites = {}
-PlayerInfo = {}
 ----------------------------------------------------------------------------------
 -- Functions For Player Menu
 ----------------------------------------------------------------------------------
 function PMOpen()
+    print('prepping player menu data')
     prepSessionData()
     -------------------------------------------------------------------------------- 
     prepInviteData()
@@ -19,6 +16,7 @@ function PMOpen()
     prepPlayerList()
     --------------------------------------------------------------------------------
     BuildPlayerMenu()
+    print('launching player menu')
     --------------------------------------------------------------------------------
     LaunchUiappByHashWithEntry(mpUIhash, mpUIEntryhash)
 end
@@ -34,8 +32,11 @@ end
 Citizen.CreateThread(function()
     while true do
         if IsControlJustReleased(0, GetHashKey('INPUT_PLAYER_MENU')) then
+                    print('L')
             if CanLaunchUiappByHash(mpUIhash) then
-                if not IsUiappActiveByHash(mpUIhash) then            
+                    print('canlaunch')
+                if not IsUiappActiveByHash(mpUIhash) then 
+                    print('isnt already active')          
                     PMOpen()
                 end
             end

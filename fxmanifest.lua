@@ -18,10 +18,10 @@ shared_scripts {
 }
 --[[ Client Scripts ]]--
 client_scripts {
-    'dataview.lua',
+    'Dataview.lua',
     'DynamicLabels.lua',
     'DataBindings.lua',
-    'ItemBindings.lua',
+    'BuildFunctions.lua',
     'npmClient.lua',
 }
 --[[ Server Scripts ]]--
