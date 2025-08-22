@@ -10,9 +10,9 @@ GameDataBinds["players_pages"] = DatabindingAddDataContainerFromPath("", "player
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 function prepSessionData()
-    -- session data
+    -- session data these were pulled from session decompliles.
     DatabindingAddDataString(GameDataBinds["sessionInfo"], "characterName", "Player: Playername ( Level: 9000 )") 
-    -- sets player name in the session info.
+	DatabindingAddDataBool(GameDataBinds["sessionInfo"], "isHorseAlive", true);
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
