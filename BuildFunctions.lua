@@ -1,7 +1,17 @@
 ------------------------------------------------------------------------------------------------------------
+-- Player Items
+------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------
+-- Moonshine Shack
+------------------------------------------------------------------------------------------------------------
+function MoonshineLocationItem(key, invData)
+
+end
+------------------------------------------------------------------------------------------------------------
 -- Game Invites
 ------------------------------------------------------------------------------------------------------------
-function GameInviteBuild(key, invData)
+function GameInviteItem(key, invData)
     iKey = key
     iData = invData
     local keySting = "Invite_Root_"..GetCloudTimeAsInt().."_"..key
@@ -139,4 +149,47 @@ function GameInviteBuild(key, invData)
 	-- 	DEBUG::_0xA308F935BDECCEC0(8, 162, "[PLAYER_MENU_PUSH_UI_INVITE] - Player menu is visible, and Invite matches current filter type. Push immediately to the UI List... ");
 	-- 	Global_1940463.f_245.f_1247++;
 	-- 	DATABINDING::_DATABINDING_INSERT_UI_ITEM_TO_LIST_FROM_CONTEXT_STRING_ALIAS(Global_1940463.f_245.f_5, false, "pm_invite_item", Global_1940463.f_245.f_14[iVar0 /*41*/]);
+end
+
+--example object
+local LettertoGrandma = {
+	{	
+		['Type'] = 0,
+		['containerId'] = 'textField0',
+		['Style'] = 3,
+		['RawText'] = 'Dear GrandMother,'
+	},
+	{
+		['Type'] = 0,
+		['containerId'] = 'textField1',
+		['Style'] = 3,
+		['RawText'] = 'It is with great sorrow that I inform you that Your Doctor has Given you 3 days to live.'
+	},
+	{
+		['Type'] = 1,
+		['containerId'] = 'divider0',
+		['IsVisible'] = true
+	},
+	{
+		['Type'] = 0,
+		['containerId'] = 'textField2',
+		['Style'] = 3,
+		['RawText'] = 'The Syphilis is rampant enough that he had to burn his clinic down.. He prays for your soul.'
+	},
+}
+
+local StoredTextFields = {}
+function TranslateGeneric(TextFields) 
+        GameDataBinds["Translate"] = DatabindingAddDataContainerFromPath("", "Translate");
+        GameDataBinds["Generic"] = DatabindingAddDataContainer(GameDataBinds["Translate"], "Generic");
+		for i=1, #TextFields do
+			if TextFields[i].Type == 0 then
+				StoredTextFields[i] = DatabindingAddDataContainer(GameDataBinds["Generic"], TextFields[i].containerId);
+				DatabindingAddDataInt(StoredTextFields[i], "style", TextFields[i].Style); --- 3 or false in most scripts
+				DatabindingAddDataHash(StoredTextFields[i], "text", TextFields[i].RawText);
+			else
+				StoredTextFields[i] = DatabindingAddDataContainer(GameDataBinds["Generic"], TextFields[i].containerId);
+				DatabindingAddDataHash(StoredTextFields[i], "isVisible", TextFields[i].IsVisible);
+			end
+		end
 end
