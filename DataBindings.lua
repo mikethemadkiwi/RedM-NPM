@@ -8,6 +8,8 @@ function LoadDataBindings()
         GameDataBinds["player_menu_stables"] = DatabindingAddDataContainerFromPath("", "player_menu_stables")
         GameDataBinds["player_menu_data"] = DatabindingAddDataContainerFromPath("", "player_menu_data")
         GameDataBinds["players_pages"] = DatabindingAddDataContainerFromPath("", "players_pages")
+	    GameDataBinds["player_options_data"] = DatabindingAddDataContainerFromPath("", "player_options_data");
+
         GameDataBinds["invite_data"] = DatabindingAddDataContainerFromPath("", "invite_data"); 
         GameDataBinds["match_data"] = DatabindingAddDataContainerFromPath("", "match_data")
         GameDataBinds["job_list_data"] = DatabindingAddDataContainerFromPath("", "job_list_data");
@@ -25,8 +27,40 @@ function prepContainers()
     DatabindingClearBindingArray(GameUILists["moonshine_property_collection"])
     GameUILists["moonshine_property_collection"] = DatabindingAddUiItemList(GameDataBinds["moonshine_property_data"], "moonshine_property_collection")
     DatabindingClearBindingArray(GameUILists["904318604"])
-    GameUILists["904318604"] = DatabindingAddUiItemListByHash(GameDataBinds["invite_data"], 904318604) -- ?? pm_invite_item?
+    GameUILists["904318604"] = DatabindingAddUiItemListByHash(GameDataBinds["invite_data"], 904318604) -- ?? pm_invite_item? 
+    DatabindingClearBindingArray(GameUILists["player_collection"])
+	GameUILists["player_collection"] = DatabindingAddUiItemList(GameDataBinds["player_data"], "player_collection")
+    DatabindingClearBindingArray(GameUILists["player_sub_header"])
+    GameUILists["player_sub_header"] = DatabindingAddUiItemList(GameDataBinds["player_menu_data"], "player_sub_header")
+    DatabindingClearBindingArray(GameUILists["match_data_entries"])
+	GameUILists['match_data_entries'] = DatabindingAddUiItemList(GameDataBinds["match_data"], "match_data_entries")
+end
 
+
+function SharedDatabinds(RootId, ContId, Param10)
+	local sharedContainer = DatabindingAddDataContainer(RootId, ContId);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(0), Param10[1]);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(1), Param10[2]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(2), Param10[3]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(54), Param10[4]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(55), Param10[5]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(57), Param10[6]);
+    DatabindingAddDataHash(sharedContainer, UIDynamicLabels(56), Param10[7]);
+    if (selecthash == 0) then
+        selecthash = GetHashKey("IB_SELECT")
+    end
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(58), Param10[8]);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(59), Param10[9]);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(60), Param10[10]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(61), Param10[11]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(67), Param10[12]);
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(62), Param10[13]);
+    if (selecthash == 0) then
+        selecthash = GetHashKey("IB_SELECT")
+    end
+	DatabindingAddDataHash(sharedContainer, UIDynamicLabels(64), Param10[14]);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(65), Param10[15]);
+	DatabindingAddDataBool(sharedContainer, UIDynamicLabels(66), Param10[16]);
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -118,114 +152,164 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 function prepMatchMaking()    
     -- matchmaking
-	MatchMakingEntries = DatabindingAddUiItemList(GameDataBinds["match_data"], "match_data_entries")
-	DatabindingClearBindingArray(MatchMakingEntries)
+	DatabindingClearBindingArray(GameUILists['match_data_entries'])
+    --- fill matchmamking if it exists.
+
+    ---
     DatabindingAddDataBool(GameDataBinds["match_data"], "cancel_matchmaking_visible", false) -- shuts the matchmaking system up when not using it.
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
-function prepJobList()    
--- bVar2 = func_948(2);
--- 	bVar3 = func_948(3);
--- 	bVar4 = func_948(4);
--- 	bVar5 = func_948(8);
--- 	bVar6 = func_948(9);
--- 	bVar7 = func_948(19);
--- 	bVar8 = func_948(18);
--- 	bVar9 = func_948(20);
--- 	Global_1940463.f_1496.f_1463.f_1 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryMenuEnabled", ((bVar2 || bVar3) || bVar4));
--- 	Global_1940463.f_1496.f_1463.f_5 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationMenuEnabled", (bVar5 || bVar6));
--- 	Global_1940463.f_1496.f_1463.f_2 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversarySmallEnabled", bVar2);
--- 	Global_1940463.f_1496.f_1463.f_3 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryMediumEnabled", bVar3);
--- 	Global_1940463.f_1496.f_1463.f_4 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryLargeEnabled", bVar4);
--- 	Global_1940463.f_1496.f_1463.f_6 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationMediumEnabled", bVar5);
--- 	Global_1940463.f_1496.f_1463.f_7 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationLargeEnabled", bVar6);
--- 	Global_1940463.f_1496.f_1463.f_8 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistRaceSeriesEnabled", func_948(0));
--- 	Global_1940463.f_1496.f_1463.f_9 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistNominatedSeriesEnabled", func_948(12));
--- 	Global_1940463.f_1496.f_1463.f_10 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistFeatured001Enabled", func_948(1));
--- 	Global_1940463.f_1496.f_1463.f_16 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistStorySeriesEnabled", bVar0);
--- 	Global_1940463.f_1496.f_1463.f_17 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistSeriesOnCallEnabled", ((((((bVar2 || bVar3) || bVar4) || bVar5) || bVar6) || bVar7) || bVar8));
--- 	Global_1940463.f_1496.f_1463.f_18 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistHardcoreSeriesEnabled", bVar9);
--- 	Global_1940463.f_1496.f_1463.f_14 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistCaptureSeriesEnabled", bVar7);
--- 	Global_1940463.f_1496.f_1463.f_15 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistShootoutSeriesEnabled", bVar8);
--- 	bVar10 = func_3756(2);
--- 	bVar11 = func_3756(3);
--- 	bVar12 = func_3756(4);
--- 	bVar13 = func_3756(8);
--- 	bVar14 = func_3756(9);
--- 	bVar15 = func_3756(19);
--- 	bVar16 = func_3756(18);
--- 	Global_1940463.f_1496.f_1463.f_20 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryMenuVisible", ((bVar10 || bVar11) || bVar12));
--- 	Global_1940463.f_1496.f_1463.f_24 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationMenuVisible", (bVar13 || bVar14));
--- 	Global_1940463.f_1496.f_1463.f_21 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversarySmallVisible", false);
--- 	Global_1940463.f_1496.f_1463.f_22 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryMediumVisible", false);
--- 	Global_1940463.f_1496.f_1463.f_23 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistAdversaryLargeVisible", false);
--- 	Global_1940463.f_1496.f_1463.f_25 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationMediumVisible", bVar13);
--- 	Global_1940463.f_1496.f_1463.f_26 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistEliminationLargeVisible", false);
--- 	Global_1940463.f_1496.f_1463.f_27 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistRaceSeriesVisible", func_3756(0));
--- 	Global_1940463.f_1496.f_1463.f_28 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistNominatedSeriesVisible", func_3756(10));
--- 	Global_1940463.f_1496.f_1463.f_29 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistNominatedSeriesMediumVisible", func_3756(12));
--- 	Global_1940463.f_1496.f_1463.f_30 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistNominatedSeriesLargeVisible", func_3756(13));
--- 	Global_1940463.f_1496.f_1463.f_31 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistFeatured001Visible", func_3756(1));
--- 	Global_1940463.f_1496.f_1463.f_32 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistStorySeriesVisible", true);
--- 	Global_1940463.f_1496.f_1463.f_33 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistSeriesOnCallVisible", true);
--- 	Global_1940463.f_1496.f_1463.f_38 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistCaptureSeriesVisible", bVar15);
--- 	Global_1940463.f_1496.f_1463.f_39 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistShootoutSeriesVisible", bVar16);
--- 	Global_1940463.f_1496.f_1463.f_34 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistHardcoreSeriesVisible", (func_3756(20) && func_4468(0)));
--- 	Global_1940463.f_1496.f_1463.f_11 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistPSN1SeriesEnabled", (MISC::IS_ORBIS_VERSION() && func_948(15)));
--- 	Global_1940463.f_1496.f_1463.f_13 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistPSN2SeriesEnabled", false);
--- 	Global_1940463.f_1496.f_1463.f_35 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistPSN1SeriesVisible", (MISC::IS_ORBIS_VERSION() && func_3756(15)));
--- 	Global_1940463.f_1496.f_1463.f_37 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistPSN2SeriesVisible", (MISC::IS_ORBIS_VERSION() && func_3756(16)));
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay1SeriesEnabled", false);
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay2SeriesEnabled", false);
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay3SeriesEnabled", false);
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay1SeriesVisible", false);
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay2SeriesVisible", false);
--- 	DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "JobMenuPlaylistDebugPlay3SeriesVisible", false);
--- 	Global_1940463.f_1496.f_1463.f_40 = DATABINDING::_DATABINDING_ADD_DATA_STRING(Global_1940463.f_1496.f_1463, "jobs_text", "MATCHMAKING_LINK");
--- 	Global_1940463.f_1496.f_1463.f_41 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "select_prompt_visible", true);
--- 	Global_1940463.f_1496.f_1463.f_42 = DATABINDING::_DATABINDING_ADD_DATA_HASH(Global_1940463.f_1496.f_1463, "details_photo_dictionary", joaat("PAUSEMENU_TEXTURES"));
--- 	Global_1940463.f_1496.f_1463.f_43 = DATABINDING::_DATABINDING_ADD_DATA_HASH(Global_1940463.f_1496.f_1463, "details_photo_image", false);
--- 	Global_1940463.f_1496.f_1463.f_44 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_1463, "social_club_visible", false);
+function prepJobList()
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryMenuEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationMenuEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversarySmallEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryMediumEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryLargeEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationMediumEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationLargeEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistRaceSeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistNominatedSeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistFeatured001Enabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistStorySeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistSeriesOnCallEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistHardcoreSeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistCaptureSeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistShootoutSeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryMenuVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationMenuVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversarySmallVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryMediumVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistAdversaryLargeVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationMediumVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistEliminationLargeVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistRaceSeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistNominatedSeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistNominatedSeriesMediumVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistNominatedSeriesLargeVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistFeatured001Visible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistStorySeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistSeriesOnCallVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistCaptureSeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistShootoutSeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistHardcoreSeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistPSN1SeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistPSN2SeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistPSN1SeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistPSN2SeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay1SeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay2SeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay3SeriesEnabled", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay1SeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay2SeriesVisible", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "JobMenuPlaylistDebugPlay3SeriesVisible", false);
+    DatabindingAddDataString(GameDataBinds["job_list_data"], "jobs_text", "MATCHMAKING_LINK");
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "select_prompt_visible", true);
+    DatabindingAddDataHash(GameDataBinds["job_list_data"], "details_photo_dictionary", GetHashKey("PAUSEMENU_TEXTURES"));
+    DatabindingAddDataHash(GameDataBinds["job_list_data"], "details_photo_image", false);
+    DatabindingAddDataBool(GameDataBinds["job_list_data"], "social_club_visible", false);
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 function prepMiniGameData()
-	-- Global_1940463.f_1496.f_8482.f_3 = DATABINDING::_DATABINDING_ADD_DATA_HASH(Global_1940463.f_1496.f_8482, "minigame_game_details_texture_dictionary", false);
-	-- Global_1940463.f_1496.f_8482.f_2 = DATABINDING::_DATABINDING_ADD_DATA_HASH(Global_1940463.f_1496.f_8482, "minigame_game_details_texture", false);
-	-- Global_1940463.f_1496.f_8482.f_4 = DATABINDING::_DATABINDING_ADD_DATA_STRING(Global_1940463.f_1496.f_8482, "minigame_game_details_body_text", "NET_MG_POKER_LEGAL_GAME_DETAILS");
-	-- Global_1940463.f_1496.f_8482.f_1 = DATABINDING::_DATABINDING_ADD_DATA_STRING(Global_1940463.f_1496.f_8482, "minigame_sub_header_raw_text", "");
-	-- Global_1940463.f_1496.f_8482.f_5 = DATABINDING::_DATABINDING_ADD_DATA_STRING(Global_1940463.f_1496.f_8482, "minigame_game_landing_public_buy_in_raw_text", "");
-	-- Global_1940463.f_1496.f_8482.f_6 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_landing_public_buy_in_visible", true);
-	-- Global_1940463.f_1496.f_8482.f_7 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_landing_public_buy_in_enabled", false);
-	-- Global_1940463.f_1496.f_8482.f_8 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_landing_private_visible", true);
-	-- Global_1940463.f_1496.f_8482.f_9 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_landing_private_enabled", false);
-	-- Global_1940463.f_1496.f_8482.f_13 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_ui_is_forced", false);
-	-- Global_1940463.f_1496.f_8482.f_10 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_buy_in_visible", true);
-	-- Global_1940463.f_1496.f_8482.f_11 = DATABINDING::_DATABINDING_ADD_DATA_BOOL(Global_1940463.f_1496.f_8482, "minigame_game_buy_in_enabled", true);
-	-- Global_1940463.f_1496.f_8482.f_12 = DATABINDING::_DATABINDING_ADD_DATA_STRING(Global_1940463.f_1496.f_8482, "minigame_game_buy_in_raw_text", "");
+	DatabindingAddDataHash(GameDataBinds["minigame_data"], "minigame_game_details_texture_dictionary", false);
+	DatabindingAddDataHash(GameDataBinds["minigame_data"], "minigame_game_details_texture", false);
+	DatabindingAddDataString(GameDataBinds["minigame_data"], "minigame_game_details_body_text", "NET_MG_POKER_LEGAL_GAME_DETAILS");
+	DatabindingAddDataString(GameDataBinds["minigame_data"], "minigame_sub_header_raw_text", "");
+	DatabindingAddDataString(GameDataBinds["minigame_data"], "minigame_game_landing_public_buy_in_raw_text", "");
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_landing_public_buy_in_visible", true);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_landing_public_buy_in_enabled", false);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_landing_private_visible", true);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_landing_private_enabled", false);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_ui_is_forced", false);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_buy_in_visible", true);
+	DatabindingAddDataBool(GameDataBinds["minigame_data"], "minigame_game_buy_in_enabled", true);
+	DatabindingAddDataString(GameDataBinds["minigame_data"], "minigame_game_buy_in_raw_text", "");
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 function prepPlayerList()
-	PlayerUserList = DatabindingAddUiItemList(GameDataBinds["player_data"], "player_collection")
-	DatabindingAddDataBool(GameDataBinds["players_pages"], DynamicLabels(77), false)
-	DatabindingAddDataBool(GameDataBinds["players_pages"], DynamicLabels(78), false)
-	DatabindingAddDataString(GameDataBinds["players_pages"], DynamicLabels(76), "")
-	DatabindingAddDataInt(GameDataBinds["players_pages"], DynamicLabels(55), GetHashKey("PLAYER_MENU"))
-	DatabindingAddDataInt(GameDataBinds["players_pages"], DynamicLabels(79), -1996395310)
-	DatabindingAddDataBool(GameDataBinds["players_pages"], DynamicLabels(92), false);
-	DatabindingAddDataBool(GameDataBinds["players_pages"], DynamicLabels(93), false);
+	DatabindingAddDataBool(GameDataBinds["players_pages"], UIDynamicLabels(77), false)
+	DatabindingAddDataBool(GameDataBinds["players_pages"], UIDynamicLabels(78), false)
+	DatabindingAddDataString(GameDataBinds["players_pages"], UIDynamicLabels(76), "")
+	DatabindingAddDataInt(GameDataBinds["players_pages"], UIDynamicLabels(55), GetHashKey("PLAYER_MENU"))
+	DatabindingAddDataInt(GameDataBinds["players_pages"], UIDynamicLabels(79), -1996395310)
+	DatabindingAddDataBool(GameDataBinds["players_pages"], UIDynamicLabels(92), false);
+	DatabindingAddDataBool(GameDataBinds["players_pages"], UIDynamicLabels(93), false);
+	local subheaderplayer = DatabindingAddDataContainer(GameDataBinds["player_options_data"], "sub_header_player");
+	DatabindingAddDataHash(subheaderplayer, UIDynamicLabels(2), GetHashKey("COLOR_WHITE"));
+	DatabindingAddDataString(subheaderplayer, UIDynamicLabels(15), "");
+	DatabindingAddDataHash(subheaderplayer, UIDynamicLabels(9), false);
+	DatabindingAddDataHash(subheaderplayer, UIDynamicLabels(10), false);
+	DatabindingAddDataBool(subheaderplayer, UIDynamicLabels(11), false);
+	DatabindingAddDataBool(subheaderplayer, UIDynamicLabels(0), true);
+    local kfp = DatabindingAddDataContainer(subheaderplayer, "kickFromPosse");
+	DatabindingAddDataBool(kfp, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(kfp, UIDynamicLabels(1), 0);
+	local itp = DatabindingAddDataContainer(subheaderplayer, "inviteToPosse");
+	DatabindingAddDataBool(itp, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(itp, UIDynamicLabels(1), 0);
+	local its = DatabindingAddDataContainer(subheaderplayer, "inviteToSession");
+	DatabindingAddDataBool(its, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(its, UIDynamicLabels(1), 0);
+	local jts = DatabindingAddDataContainer(subheaderplayer, "joinSession");
+	DatabindingAddDataBool(jts, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(jts, UIDynamicLabels(1), 0);
+	local val = DatabindingAddDataContainer(subheaderplayer, "viewAbilityLoadout");
+	DatabindingAddDataBool(val, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(val, UIDynamicLabels(1), 0);
+	local vps = DatabindingAddDataContainer(subheaderplayer, "viewPlayerStats");
+	DatabindingAddDataBool(vps, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(vps, UIDynamicLabels(1), 0);
+	local vpo = DatabindingAddDataContainer(subheaderplayer, "viewPosse");
+	DatabindingAddDataBool(vpo, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(vpo, UIDynamicLabels(1), 0);
+	local adf = DatabindingAddDataContainer(subheaderplayer, "addFriend");
+	DatabindingAddDataBool(adf, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(adf, UIDynamicLabels(1), 0);
+	local itc = DatabindingAddDataContainer(subheaderplayer, "inviteToCrew");
+	DatabindingAddDataBool(itc, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(itc, UIDynamicLabels(1), 0);
+	local playm = DatabindingAddDataContainer(subheaderplayer, "message");
+	DatabindingAddDataBool(playm, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(playm, UIDynamicLabels(1), 0);
+	local prt = DatabindingAddDataContainer(subheaderplayer, "report");
+	DatabindingAddDataBool(prt, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(prt, UIDynamicLabels(1), 0);
+	local gmc = DatabindingAddDataContainer(subheaderplayer, "gamerCard");
+	DatabindingAddDataBool(gmc, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(gmc, UIDynamicLabels(1), 0);
+	local rmf = DatabindingAddDataContainer(subheaderplayer, "removeFriend");
+	DatabindingAddDataBool(rmf, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(rmf, UIDynamicLabels(1), 0);
+	local vcc = DatabindingAddDataContainer(subheaderplayer, "voiceChatChannel");
+	DatabindingAddDataBool(vcc, UIDynamicLabels(0), false);
+	DatabindingAddDataBool(vcc, UIDynamicLabels(1), false);
+	DatabindingAddDataString(vcc, UIDynamicLabels(17), "");
+	DatabindingAddDataHash(GameDataBinds["player_options_data"], "player_options_prompt_mute_player_text", false);
+	DatabindingAddDataBool(GameDataBinds["player_options_data"], "player_options_prompt_mute_player_enabled", false);
+	DatabindingAddDataBool(GameDataBinds["player_options_data"], "player_options_prompt_mute_player_visible", false);
+	DatabindingAddDataBool(GameDataBinds["player_options_data"], "view_ability_loadout_focused", false);
+	iVar1 = DatabindingAddDataContainer(GameDataBinds["player_options_data"], "report_data");
+	DatabindingAddDataString(iVar1, "report_player_text", "");
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 function BuildPlayerMenu()
-    PlayerMenuSubHeader = DatabindingAddUiItemList(GameDataBinds["player_menu_data"], "player_sub_header")
 
-
+	-- DATABINDING::_DATABINDING_WRITE_DATA_HASH_STRING(uParam0->f_3, Param1.f_2);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_HASH_STRING(uParam0->f_21, Param1.f_19);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_HASH_STRING(uParam0->f_22, Param1.f_20);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_BOOL(uParam0->f_23, Param1.f_21);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_STRING(uParam0->f_27, &(Param1.f_25));
+	-- DATABINDING::_DATABINDING_WRITE_DATA_STRING(uParam0->f_28, &(Param1.f_41));
+	-- DATABINDING::_DATABINDING_WRITE_DATA_BOOL(uParam0->f_29, Param1.f_57);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_HASH_STRING(uParam0->f_31, Param1.f_59);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_HASH_STRING(uParam0->f_32, Param1.f_60);
+	-- DATABINDING::_DATABINDING_WRITE_DATA_BOOL(uParam0->f_33, Param1.f_61);
     -- 	Var0 = 1;
 	-- Var0.f_1 = 1;
-	-- Var0.f_2 = joaat("COLOR_WHITE");
+	-- Var0.f_2 = GetHashKey("COLOR_WHITE");
 	-- Var0.f_4 = -1;
 	-- Var0.f_5 = -1;
 	-- Var0.f_6 = -1;

@@ -243,6 +243,7 @@ function DynamicLabels(id)
     if id == 60 then
         return "dynamic_list_item_prompt_visible";
     end
+    
     if id == 64 then
         return "dynamic_list_item_prompt_option_text";
     end
